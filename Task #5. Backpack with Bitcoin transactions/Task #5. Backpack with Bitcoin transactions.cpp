@@ -5,8 +5,6 @@
 #include <string>
 #include <algorithm>
 
-const int MAX_BLOCK_SIZE = 1000000;
-
 struct Transaction {
     std::string id;
     int size;
@@ -49,24 +47,7 @@ int main() {
     std::string filename = "transactions.csv";
     auto transactions = readTransaction(filename);
 
-    int cBlockSize = 0, totalFee = 0;
-
-    std::vector<Transaction> block;
-
-    std::sort(transactions.begin(), transactions.end(), [](const Transaction& a, const Transaction& b) {
-        return a.feePerByte() > b.feePerByte();
-        });
-
-    for (const auto& tx : transactions) {
-        if (cBlockSize + tx.size <= MAX_BLOCK_SIZE) {
-            block.push_back(tx);
-            cBlockSize += tx.size;
-            totalFee += tx.fee;
-        }
-    }
-
-    std::cout << "Block constructed!\n" << "Transactions in block : " << block.size() << std::endl
-        << "Block size: " << cBlockSize << " bytes\n" << "Total fee: " << totalFee << " satoshis\n";
+    std::cout << "Read transactions: " << transactions.size() << std::endl;
 
     return 0;
 }
